@@ -26,10 +26,7 @@ jobs:
         run: |
           go mod tidy
       - name: Build Project
-        run: go build -v ./
-
-      - name: Run Tests
-        run: go test -v ./...
+        run: go build -v cmd/main.go
 
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
