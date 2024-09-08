@@ -1,34 +1,40 @@
-name: Lint
+name: Go CI
 
 on:
   push:
-    branches:
-      - master
+    branches: [ "main" ]
+    paths:
+      - '**.go'
   pull_request:
-
-permissions:
-  contents: read
-  pull-requests: read
+    branches: [ "main" ]
+    paths:
+      - '**.go'
 
 jobs:
-  linting:
-    name: Lint
+  build:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.22'
+      - name: Build
+        run: go build -v ./...
+      - name: Test
+        run: go test -v ./...
+
+  lint:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v3
       - uses: actions/setup-go@v4
         with:
-          go-version: "1.22.4"
+          go-version: '1.22'
           cache: false
-
-      - uses: actions/checkout@v3
-
-      - name: Get dependencies
-        run: |
-          go mod tidy
-      - name: Build Project
-        run: go build -v cmd/main.go
-
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v3
         with:
-          version: v1.52
+          version: v1.56.0
+          args: --timeout 3m --config .golangci.yaml
