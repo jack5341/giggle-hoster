@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"os"
 
@@ -44,7 +45,11 @@ func (h *Hcloud) CreateNewInstance(ctx context.Context, opts hcloud.ServerCreate
 	}
 
 	if response.StatusCode != http.StatusCreated {
-		defer response.Body.Close()
+		defer func() {
+			if err := response.Body.Close(); err != nil {
+				log.Printf("failed to close response body: %v", err)
+			}
+		}()
 		rawBody, err := io.ReadAll(response.Body)
 
 		if err != nil {
@@ -66,7 +71,12 @@ func (h *Hcloud) DeleteInstance(ctx context.Context, server *hcloud.Server) (hcl
 	}
 
 	if response.StatusCode != http.StatusOK {
-		defer response.Body.Close()
+		defer func() {
+			if err := response.Body.Close(); err != nil {
+				log.Printf("failed to close response body: %v", err)
+			}
+		}()
+
 		rawBody, err := io.ReadAll(response.Body)
 
 		if err != nil {

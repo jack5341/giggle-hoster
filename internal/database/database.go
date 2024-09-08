@@ -19,11 +19,11 @@ var (
 )
 
 func EstablishDBConnection() (*gorm.DB, error) {
-	dbUrl := os.Getenv("DB_URL")
+	dbURL := os.Getenv("DB_URL")
 
 	var dsn string
-	if dbUrl != "" {
-		dsn = dbUrl
+	if dbURL != "" {
+		dsn = dbURL
 	} else {
 		dbHost := os.Getenv("DB_HOST")
 		dbPort := os.Getenv("DB_PORT")

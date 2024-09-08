@@ -11,19 +11,19 @@ var (
 	ErrFitNodeCouldNotBeFound = errors.New("fit not could not be found")
 )
 
-func CreateNode(db *gorm.DB) {
+// func CreateNode(db *gorm.DB) {
 
-}
+// }
 
-func DeleteNode(db *gorm.DB) {
+// func DeleteNode(db *gorm.DB) {
 
-}
+// }
 
-func FindFitNode(db *gorm.DB, requestedMem int, requestedCpu int) (types.Node, error) {
+func FindFitNode(db *gorm.DB, requestedMem int, requestedCPU int) (types.Node, error) {
 	var node types.Node
 	tx := db.Begin()
 
-	err := tx.Where("free_mem >= ? AND free_cpu >= ?", requestedMem, requestedCpu).
+	err := tx.Where("free_mem >= ? AND free_cpu >= ?", requestedMem, requestedCPU).
 		Order("free_mem DESC, free_cpu DESC").
 		First(&node).Error
 

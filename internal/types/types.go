@@ -61,7 +61,7 @@ type Node struct {
 	Size      string    `gorm:"notnull"`
 	Pods      []Pod     `gorm:"foreignKey:BelongsToNodeID"`
 	FreeMem   int       `gorm:"notnull"`
-	FreeCpu   int       `gorm:"notnull"`
+	FreeCPU   int       `gorm:"notnull"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
@@ -72,7 +72,7 @@ type Pod struct {
 	Metadata        []string  `gorm:"type:text[]"`
 	ExposedPort     int       `gorm:"notnull"`
 	RequestedMem    int       `gorm:"notnull"`
-	RequestedCpu    int       `gorm:"notnull"`
+	RequestedCPU    int       `gorm:"notnull"`
 	BelongsToUser   uuid.UUID `gorm:"notnull"`
 	BelongsToNodeID uuid.UUID `gorm:"notnull"`
 }
