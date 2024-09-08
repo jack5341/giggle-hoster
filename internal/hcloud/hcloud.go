@@ -19,6 +19,7 @@ var (
 	ErrHetznerTokenIsNotExist                     = errors.New("hetzner token has to be setted")
 	ErrServerCouldNotBeCreated                    = errors.New("an error occurred during server creation process")
 	ErrServerCouldNotBeDeleted                    = errors.New("an error occurred during server deletion process")
+	ErrServerTypesCouldNotBeRetrieved             = errors.New("server type could not be retrieved")
 	ErrUnexpectedErrorDuringServerCreationProcess = errors.New("unexpected error during server creation process")
 	ErrUnexpectedErrorDuringServerDeletionProcess = errors.New("unexpected error during server deletion process")
 )
@@ -77,4 +78,14 @@ func (h *Hcloud) DeleteInstance(ctx context.Context, server *hcloud.Server) (hcl
 	}
 
 	return *deletedServer, nil
+}
+
+func (h *Hcloud) GetAllServerTypes(ctx context.Context) ([]*hcloud.ServerType, error) {
+	client := h.Client
+	allServerTypes, err := client.ServerType.All(ctx)
+	if err != nil {
+		return nil, errors.Join(ErrServerTypesCouldNotBeRetrieved, err)
+	}
+
+	return allServerTypes, nil
 }

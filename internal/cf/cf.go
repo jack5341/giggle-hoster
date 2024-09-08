@@ -16,10 +16,18 @@ var (
 	ErrCloudflareConnectionCouldNotBeEstablished = errors.New("cloudflare connection could not be established please check your CLOUDFLARE_API_KEY and CLOUDFLARE_API_EMAIL variables")
 	ErrDNSRecordCouldNotBeCreated                = errors.New("DNS record could not be created")
 	ErrDNSRecordCouldNotBeDeleted                = errors.New("DNS record could not be deleted")
+	ErrEnvVariablesHaveToBeConfigured            = errors.New("env variable have to be configured")
 )
 
 func (c *Cloudflare) NewClient() (*Cloudflare, error) {
-	api, err := cloudflare.New(os.Getenv("CLOUDFLARE_API_KEY"), os.Getenv("CLOUDFLARE_API_EMAIL"))
+	apiKey := os.Getenv("CLOUDFLARE_API_KEY")
+	apiEmail := os.Getenv("CLOUDFLARE_API_EMAIL")
+
+	if apiKey == "" || apiEmail == "" {
+		return nil, ErrEnvVariablesHaveToBeConfigured
+	}
+
+	api, err := cloudflare.New(apiKey, apiEmail)
 	if err != nil {
 		return nil, errors.Join(ErrCloudflareConnectionCouldNotBeEstablished, err)
 	}

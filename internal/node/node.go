@@ -1,14 +1,35 @@
 package node
 
-import "gorm.io/gorm"
+import (
+	"errors"
 
-var Node struct {
+	"github.com/jack5341/giggle-hoster/internal/types"
+	"gorm.io/gorm"
+)
+
+var (
+	ErrFitNodeCouldNotBeFound = errors.New("fit not could not be found")
+)
+
+func CreateNode(db *gorm.DB) {
+
 }
 
-func CreateNode(db *gorm.DB, user any) {
+func DeleteNode(db *gorm.DB) {
 
 }
 
-func DeleteNode(db *gorm.DB, nodeID string) {
+func FindFitNode(db *gorm.DB, requestedMem int, requestedCpu int) (types.Node, error) {
+	var node types.Node
+	tx := db.Begin()
 
+	err := tx.Where("free_mem >= ? AND free_cpu >= ?", requestedMem, requestedCpu).
+		Order("free_mem DESC, free_cpu DESC").
+		First(&node).Error
+
+	if err != nil {
+		return node, errors.Join(ErrFitNodeCouldNotBeFound, err)
+	}
+
+	return node, nil
 }

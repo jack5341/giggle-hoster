@@ -1,4 +1,4 @@
-module github.com/jack5341/serverz-game
+module github.com/jack5341/giggle-hoster
 
 go 1.22.4
 
@@ -8,6 +8,7 @@ require (
 	github.com/cloudflare/cloudflare-go v0.103.0 // indirect
 	github.com/goccy/go-json v0.10.3 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
+	github.com/google/uuid v1.6.0 // indirect
 	github.com/hetznercloud/hcloud-go/v2 v2.13.1 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20221227161230-091c0ba34f0a // indirect
