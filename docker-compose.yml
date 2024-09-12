@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: giggle
+      POSTGRES_PASSWORD: giggle-password
+      POSTGRES_USER: giggle-hoster
+    ports:
+      - 5435:5432
+    restart: on-failure:3
+  pgweb:
+    image: sosedoff/pgweb
+    depends_on:
+      - postgres
+    environment:
+      PGWEB_DATABASE_URL: postgres://giggle-hoster:giggle-password@postgres:5432/giggle?sslmode=disable
+    ports:
+      - 8085:8081
+    restart: on-failure:3
+  redis:
+    image: redis:7.4
+    command: redis-server
+    ports:
+      - 6379:6379

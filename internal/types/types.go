@@ -7,6 +7,14 @@ import (
 )
 
 type Provider string
+type Status string
+
+const (
+	STARTING Status = "STARTING"
+	PENDING  Status = "PENDING"
+	WELL     Status = "WELL"
+	STOPPED  Status = "STOPPED"
+)
 
 const (
 	HCLOUD Provider = "HCLOUD"
@@ -57,22 +65,10 @@ type Node struct {
 	ID        uuid.UUID `gorm:"type:uuid;default:gen_random_uuid()"`
 	Name      string    `gorm:"notnull"`
 	Metadata  []string  `gorm:"type:text[]"`
-	Provider  Provider  `gorm:"notnull"`
+	Provider  Provider  `gorm:"notnull;Provider"`
 	Size      string    `gorm:"notnull"`
-	Pods      []Pod     `gorm:"foreignKey:BelongsToNodeID"`
-	FreeMem   int       `gorm:"notnull"`
-	FreeCPU   int       `gorm:"notnull"`
+	Url       string    `gorm:"notnull"`
+	Status    Status    `gorm:"notnull;Status"`
 	CreatedAt time.Time
 	UpdatedAt time.Time
-}
-
-type Pod struct {
-	ID              uuid.UUID `gorm:"type:uuid;default:gen_random_uuid()"`
-	Name            string    `gorm:"notnull"`
-	Metadata        []string  `gorm:"type:text[]"`
-	ExposedPort     int       `gorm:"notnull"`
-	RequestedMem    int       `gorm:"notnull"`
-	RequestedCPU    int       `gorm:"notnull"`
-	BelongsToUser   uuid.UUID `gorm:"notnull"`
-	BelongsToNodeID uuid.UUID `gorm:"notnull"`
 }
