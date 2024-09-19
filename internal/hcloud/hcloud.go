@@ -25,7 +25,8 @@ var (
 	ErrUnexpectedErrorDuringServerDeletionProcess = errors.New("unexpected error during server deletion process")
 )
 
-func (h *Hcloud) NewClient() (*Hcloud, error) {
+func NewClient() (*Hcloud, error) {
+	h := new(Hcloud)
 	hcloudToken := os.Getenv("HCLOUD_TOKEN")
 	if hcloudToken == "" {
 		return nil, ErrHetznerTokenIsNotExist
